@@ -47,6 +47,7 @@ class Tank:
     def draw(self, screen):
         pygame.draw.rect(surface=screen, color=self.color, rect=self.rect)
 
+        # отрисовываем дуло, которое будет поворачиваться в зависимости от направления
         x, width = self.rect.centerx, DIRECTS[self.direct][0] * 30
         y, height = self.rect.centery, DIRECTS[self.direct][1] * 30
         pygame.draw.line(surface=screen, color="white",
