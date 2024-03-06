@@ -29,7 +29,10 @@ class Tank:
     # обновление
     def update(self, keys):
         if keys[self.key_left]:
+            # при нажатии влево координата по х изменяется на self.move_speed
             self.rect.x -= self.move_speed
+            # направление изменяется в зависимости от нажатия клавиши
+            # это индекс в DIRECTS
             self.direct = 0
         elif keys[self.key_right]:
             self.rect.x += self.move_speed
