@@ -25,6 +25,11 @@ class Tank:
         self.bullet_damage = 1
         # скорость полета пули
         self.bullet_speed = 5
+        # задержка между выстрелами
+        # равна 60 кадрам в секунду (FPS)
+        self.shot_delay = 60
+        # счетчик времени с момента выстрела
+        self.shot_timer = 0
 
         # кнопки (влево/вправо/вверх/вниз/выстрел)
         self.key_left = key_list[0]
@@ -52,7 +57,7 @@ class Tank:
             self.direct = 3
             # print("move")
         # стрельба происходит независимо от передвижения танка
-        if keys[self.key_shot]:
+        if keys[self.key_shot] and self.shot_timer == 0:
             # print("shot")
             # dx, dy - направление полета пули
             # оно совпадает с напралением дула танка
@@ -61,6 +66,13 @@ class Tank:
             Bullet(self, self.rect.centerx + 1, self.rect.centery + 1,
                    dx, dy, self.bullet_damage)
             # print(dx, dy)
+            # после выстрела меняем значение счетчика времени
+            self.shot_timer = self.shot_delay
+
+        # если выстрел произведен, то уменьшаем параметр счетчика
+        # в итоге он должен обнулиться, чтобы производить новый выстрел
+        if self.shot_timer:
+            self.shot_timer -= 1
 
     # метод отрисовки на экране, экран передаем извне
     def draw(self, screen):
