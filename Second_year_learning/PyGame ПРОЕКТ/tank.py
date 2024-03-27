@@ -2,6 +2,8 @@ import pygame
 # импортируем класс пуль
 from bullet import Bullet
 
+from lists_of_objects import objects, bullets
+
 # размер картинки в пикселях
 SIZE = 32
 # направления по осям х и y
@@ -10,6 +12,8 @@ DIRECTS = [(-1, 0), (1, 0), (0, -1), (0, 1)]
 
 class Tank:
     def __init__(self, color, px, py, direct, key_list):
+        # добавим танк в список объектов
+        objects.append(self)
         # тип
         self.type = "tank"
         # цвет
@@ -20,6 +24,8 @@ class Tank:
         self.direct = direct
         # скорость танка по умолчанию
         self.move_speed = 2
+        # здоровье танка
+        self.hp = 5
 
         # урон пули танка
         self.bullet_damage = 1
@@ -84,3 +90,10 @@ class Tank:
         pygame.draw.line(surface=screen, color="white",
                          start_pos=(x, y), end_pos=(x + width, y + height),
                          width=2)
+
+    # метод уменьшения здоровья при попадании пули
+    def damage(self, value):
+        self.hp -= value
+        if self.hp <= 0:
+            objects.remove(self)
+            print(self.color, "dead")

@@ -1,8 +1,8 @@
 import pygame
 # подключаем класс танков
 from tank import Tank
-# подключаем класс пуль
-from bullet import bullets, Bullet
+
+from lists_of_objects import objects, bullets
 
 # инициализация
 pygame.init()
@@ -19,10 +19,7 @@ screen = pygame.display.set_mode(size=(WIDTH, HEIGHT))
 # создадим экземпляр класса Clock для учета времени
 clock = pygame.time.Clock()
 
-
-
-# создадим список всех объектов игры
-objects = []
+# создадим пару танков
 tank1 = Tank(color="blue",
              px=100,
              py=130,
@@ -42,7 +39,7 @@ tank2 = Tank(color="red",
                        pygame.K_w,
                        pygame.K_s,
                        pygame.K_v))
-objects += [tank1, tank2]
+# objects += [tank1, tank2]
 
 # основной игровой цикл
 running = True
