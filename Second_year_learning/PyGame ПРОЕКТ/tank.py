@@ -1,4 +1,6 @@
 import pygame
+# импортируем класс пуль
+from bullet import Bullet
 
 # размер картинки в пикселях
 SIZE = 32
@@ -18,6 +20,11 @@ class Tank:
         self.direct = direct
         # скорость танка по умолчанию
         self.move_speed = 2
+
+        # урон пули танка
+        self.bullet_damage = 1
+        # скорость полета пули
+        self.bullet_speed = 5
 
         # кнопки (влево/вправо/вверх/вниз/выстрел)
         self.key_left = key_list[0]
@@ -43,8 +50,17 @@ class Tank:
         elif keys[self.key_down]:
             self.rect.y += self.move_speed
             self.direct = 3
-        elif keys[self.key_shot]:
-            pass
+            # print("move")
+        # стрельба происходит независимо от передвижения танка
+        if keys[self.key_shot]:
+            # print("shot")
+            # dx, dy - направление полета пули
+            # оно совпадает с напралением дула танка
+            dx = DIRECTS[self.direct][0] * self.bullet_speed
+            dy = DIRECTS[self.direct][1] * self.bullet_speed
+            Bullet(self, self.rect.centerx + 1, self.rect.centery + 1,
+                   dx, dy, self.bullet_damage)
+            # print(dx, dy)
 
     # метод отрисовки на экране, экран передаем извне
     def draw(self, screen):

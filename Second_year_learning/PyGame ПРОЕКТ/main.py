@@ -1,6 +1,8 @@
 import pygame
 # подключаем класс танков
 from tank import Tank
+# подключаем класс пуль
+from bullet import bullets, Bullet
 
 # инициализация
 pygame.init()
@@ -17,6 +19,8 @@ screen = pygame.display.set_mode(size=(WIDTH, HEIGHT))
 # создадим экземпляр класса Clock для учета времени
 clock = pygame.time.Clock()
 
+
+
 # создадим список всех объектов игры
 objects = []
 tank1 = Tank(color="blue",
@@ -27,7 +31,7 @@ tank1 = Tank(color="blue",
                        pygame.K_RIGHT,
                        pygame.K_UP,
                        pygame.K_DOWN,
-                       pygame.K_KP_ENTER))
+                       pygame.K_SPACE))
 
 tank2 = Tank(color="red",
              px=600,
@@ -37,7 +41,7 @@ tank2 = Tank(color="red",
                        pygame.K_d,
                        pygame.K_w,
                        pygame.K_s,
-                       pygame.KMOD_SHIFT))
+                       pygame.K_v))
 objects += [tank1, tank2]
 
 # основной игровой цикл
@@ -52,12 +56,20 @@ while running:
     # перехват кода нажатой кнопки
     keys = pygame.key.get_pressed()
 
-    # перебираем список всех объектов игры
+    # обновляем список всех пуль
+    for bullet in bullets:
+        bullet.update()
+
+    # обновляем список всех объектов игры
     for obj in objects:
         obj.update(keys)
 
     # отрисовка экрана на каждой итерации
     screen.fill(SCREEN_COLOR)
+
+    # отрисовка пуль
+    for bullet in bullets:
+        bullet.draw(screen)
 
     # отрисовываем все объекты
     for obj in objects:
