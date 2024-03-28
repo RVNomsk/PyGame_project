@@ -1,18 +1,19 @@
 import pygame
 # подключаем класс танков
 from tank import Tank
+# подключаем класс блоков
+from block import Block
 
 from lists_of_objects import objects, bullets
 
+from random import randint
+
+# импортируем ширину и высоту экрана,
+# частоту обновления кадров и цвет экрана
+from settings import WIDTH, HEIGHT, FPS, SCREEN_COLOR, SIZE
+
 # инициализация
 pygame.init()
-
-# ширина, высота экрана
-WIDTH, HEIGHT = 800, 600
-# частота обновления кадров в секунду
-FPS = 60
-# цвет экрана
-SCREEN_COLOR = (0, 0, 0)
 
 # создадим игровое окно
 screen = pygame.display.set_mode(size=(WIDTH, HEIGHT))
@@ -41,6 +42,33 @@ tank2 = Tank(color="red",
                        pygame.K_v))
 # objects += [tank1, tank2]
 
+
+# функция расстановки блоков
+def create_blocks(count_of_blocks):
+    for _ in range(count_of_blocks):
+        # будем генерировать координаты до тех пор, пока
+        # блоки не будут наслаиваться друг на друга
+        while True:
+            x = randint(0, WIDTH // SIZE - 1) * SIZE
+            y = randint(0, HEIGHT // SIZE - 1) * SIZE
+            rect = pygame.Rect(x, y, SIZE, SIZE)
+
+            # проверим, что блок не накладывается ни
+            # на какие объекты
+            can_create = True
+            for obj in objects:
+                if rect.colliderect(obj.rect):
+                    can_create = False
+            if can_create:
+                break
+
+        # создадим блок
+        Block(x, y, SIZE)
+
+
+create_blocks(50)
+
+
 # основной игровой цикл
 running = True
 while running:
@@ -59,7 +87,10 @@ while running:
 
     # обновляем список всех объектов игры
     for obj in objects:
-        obj.update(keys)
+        if obj.type == 'tank':
+            obj.update(keys)
+        elif obj.type == 'block':
+            obj.update()
 
     # отрисовка экрана на каждой итерации
     screen.fill(SCREEN_COLOR)

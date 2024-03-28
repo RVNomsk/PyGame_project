@@ -3,8 +3,8 @@ import pygame
 # с которым будет взаимодействовать пуля
 from lists_of_objects import bullets, objects
 
-# ширина, высота экрана
-WIDTH, HEIGHT = 800, 600
+# импортируем размеры окна
+from settings import WIDTH, HEIGHT
 
 
 class Bullet:

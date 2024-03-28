@@ -4,10 +4,8 @@ from bullet import Bullet
 
 from lists_of_objects import objects, bullets
 
-# размер картинки в пикселях
-SIZE = 32
-# направления по осям х и y
-DIRECTS = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+# импорт размера танка и направления
+from settings import SIZE, DIRECTS
 
 
 class Tank:
@@ -46,6 +44,11 @@ class Tank:
 
     # обновление
     def update(self, keys):
+        # танк не должен наезжать на стену и другой танк
+        # если танк столкнулся с другим объектом, то возвращаем
+        # его координаты на прежнюю позицию
+        x_before, y_before = self.rect.topleft
+
         if keys[self.key_left]:
             # при нажатии влево координата по х изменяется на self.move_speed
             self.rect.x -= self.move_speed
@@ -62,6 +65,11 @@ class Tank:
             self.rect.y += self.move_speed
             self.direct = 3
             # print("move")
+
+        for obj in objects:
+            if obj is not self and self.rect.colliderect(obj.rect):
+                self.rect.topleft = x_before, y_before
+
         # стрельба происходит независимо от передвижения танка
         if keys[self.key_shot] and self.shot_timer == 0:
             # print("shot")
