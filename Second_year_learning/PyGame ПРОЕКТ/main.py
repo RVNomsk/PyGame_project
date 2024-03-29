@@ -3,6 +3,8 @@ import pygame
 from tank import Tank
 # подключаем класс блоков
 from block import Block
+# модуль интерфейса
+from ui import UI
 
 from lists_of_objects import objects, bullets
 
@@ -42,6 +44,9 @@ tank2 = Tank(color="red",
                        pygame.K_v))
 # objects += [tank1, tank2]
 
+# создадим интерфейс
+ui = UI()
+
 
 # функция расстановки блоков
 def create_blocks(count_of_blocks):
@@ -50,7 +55,8 @@ def create_blocks(count_of_blocks):
         # блоки не будут наслаиваться друг на друга
         while True:
             x = randint(0, WIDTH // SIZE - 1) * SIZE
-            y = randint(0, HEIGHT // SIZE - 1) * SIZE
+            # нулевой ряд по оси Oy задействуется под интерфейс информации в игре
+            y = randint(1, HEIGHT // SIZE - 1) * SIZE
             rect = pygame.Rect(x, y, SIZE, SIZE)
 
             # проверим, что блок не накладывается ни
@@ -92,6 +98,9 @@ while running:
         elif obj.type == 'block':
             obj.update()
 
+    # обновляем интерфейс
+    ui.update()
+
     # отрисовка экрана на каждой итерации
     screen.fill(SCREEN_COLOR)
 
@@ -102,6 +111,9 @@ while running:
     # отрисовываем все объекты
     for obj in objects:
         obj.draw(screen)
+
+    # отрисовка интерфейса (в конце сцены!)
+    ui.draw(screen)
 
     pygame.display.update()
     # будем применять двойную буферизацию

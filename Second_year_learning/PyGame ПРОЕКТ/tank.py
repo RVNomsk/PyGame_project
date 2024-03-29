@@ -5,7 +5,7 @@ from bullet import Bullet
 from lists_of_objects import objects, bullets
 
 # импорт размера танка и направления
-from settings import SIZE, DIRECTS
+from settings import SIZE, DIRECTS, WIDTH, HEIGHT
 
 
 class Tank:
@@ -66,9 +66,13 @@ class Tank:
             self.direct = 3
             # print("move")
 
+        # ограничение движения танка
         for obj in objects:
-            if obj is not self and self.rect.colliderect(obj.rect):
+            # 0 + 30, чтобы не наезжать на поле информации
+            if obj is not self and self.rect.colliderect(obj.rect) \
+                    or not (0 <= self.rect.x <= WIDTH - SIZE) or not (0 + 30 <= self.rect.y <= HEIGHT - SIZE):
                 self.rect.topleft = x_before, y_before
+                # print(self.rect.x, WIDTH, self.rect.y, HEIGHT)
 
         # стрельба происходит независимо от передвижения танка
         if keys[self.key_shot] and self.shot_timer == 0:
