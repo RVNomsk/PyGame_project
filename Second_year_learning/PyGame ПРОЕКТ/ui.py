@@ -1,3 +1,7 @@
+"""
+Данный класс предназначен для вывода информации в поле игры
+"""
+
 import pygame
 from lists_of_objects import objects
 from settings import FONT_UI

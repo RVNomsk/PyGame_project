@@ -1,5 +1,10 @@
+"""
+Данный класс предназначен для создания стен на игровом поле
+"""
+
 from lists_of_objects import objects
 import pygame
+from settings import img_brick
 
 
 class Block:
@@ -19,8 +24,9 @@ class Block:
 
     # отрисовка блока на экране screen
     def draw(self, screen):
-        pygame.draw.rect(surface=screen, color="green",
-                         rect=self.rect, width=2)
+        screen.blit(img_brick, self.rect)
+        # pygame.draw.rect(surface=screen, color="green",
+        #                  rect=self.rect, width=2)
 
     def damage(self, value):
         self.hp -= value

@@ -1,3 +1,8 @@
+"""
+Данный клас предназначен для создания пули и взаимодействия
+пули с другими спрайтами
+"""
+
 import pygame
 # в этом модуле нужен список объектов,
 # с которым будет взаимодействовать пуля
@@ -5,6 +10,8 @@ from lists_of_objects import bullets, objects
 
 # импортируем размеры окна
 from settings import WIDTH, HEIGHT
+
+from bang import Bang
 
 
 class Bullet:
@@ -34,9 +41,11 @@ class Bullet:
             # исходя из урона, уничтожает объект
             for obj in objects:
                 if obj is not self.parent and \
-                        obj.rect.collidepoint(self.px, self.py):
-                    print("ooops")
+                        obj.rect.collidepoint(self.px, self.py) and obj.type != 'bang':
+                    # print("ooops")
                     obj.damage(self.damage)
+                    # после взаимодействия пули с объектом необходимо вызвать взрыв
+                    Bang(self.px, self.py)
                     bullets.remove(self)
                     break
 
@@ -44,25 +53,3 @@ class Bullet:
     def draw(self, screen):
         pygame.draw.circle(surface=screen, color="yellow",
                            center=(self.px, self.py), radius=2)
-
-
-# b = Bullet("tank", 100, 100, 1, 1, 1)
-# print(*bullets)
-# pygame.init()
-# # ширина, высота экрана
-# WIDTH, HEIGHT = 800, 600
-# # частота обновления кадров в секунду
-# FPS = 60
-# # цвет экрана
-# SCREEN_COLOR = (0, 0, 0)
-#
-# # создадим игровое окно
-# screen = pygame.display.set_mode(size=(WIDTH, HEIGHT))
-#
-# running = True
-# while running:
-#     for bullet in bullets:
-#         bullet.draw(screen)
-#     for bullet in bullets:
-#         bullet.update()
-#     pygame.display.update()
